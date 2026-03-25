@@ -690,7 +690,6 @@ async function saveToFirebase(state) {
       });
       setSyncStatus('ok', '\u2705 Sincronizado');
     } catch(e) {
-      console.error('Error guardando en Firebase:', e);
       setSyncStatus('err', '\u274c Sin conexi\u00f3n');
       // fallback to localStorage
       try { localStorage.setItem('estaca_backup', JSON.stringify(state)); } catch(_) {}
@@ -717,7 +716,7 @@ function roundUpCentena(v) { return Math.ceil(v / 100) * 100; }
 // UTILIDADES UI
 // \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 function getRubroIcon(rubro) {
-  const r = (rubro || '').toLowerCase();
+  const r = (rubro||'').toLowerCase();
   if (r.includes('novillo')) return '🐄';
   if (r.includes('pollo')) return '🐔';
   if (r.includes('cerdo')) return '🐖';
@@ -777,8 +776,7 @@ const PricesModule = (() => {
     const newId='v'+Date.now();
     state.priceVersions.push({id:newId,name:`Lista ${state.priceVersions.length+1}`,date:new Date().toLocaleString(),observation:obs,products:JSON.parse(JSON.stringify(products))});
     state.activeVersionId=newId;
-    console.log('Inicializando Firebase con datos base');
-      saveToFirebase(state); render(); toast(`\u2705 ${obs}`);
+    saveToFirebase(state); render(); toast(`\u2705 ${obs}`);
   }
 
   function initEvents() {
@@ -926,10 +924,10 @@ const BuilderModule = (() => {
       <div class="flyer-box" style="position:relative;">
         <div style="font-size:11px;font-weight:700;color:var(--gris-texto);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Texto para copiar</div>
         <pre id="flyerTextContent">${flyerText}</pre>
-        <button class="btn btn-dark btn-sm flyer-copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('flyerTextContent').textContent).then(()=>window._toast('📋 Texto copiado'))">📋 Copiar</button>
+        <button class="btn btn-dark btn-sm flyer-copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('flyerTextContent').textContent).then(()=>window._toast('\u1f4cb Texto copiado'))">\u1f4cb Copiar</button>
       </div>
       <div style="border-top:1.5px solid var(--gris-medio);padding-top:14px;margin-top:4px;">
-        <div style="font-size:11px;font-weight:700;color:var(--gris-texto);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">🖼️ Generar flyer imagen</div>
+        <div style="font-size:11px;font-weight:700;color:var(--gris-texto);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">\u1f5bc\ufe0f Generar flyer imagen</div>
         <div class="btn-group">
           <button class="btn btn-primary" id="genFlyer1080">\u2b07\ufe0f Cuadrado 1080\u00d71080</button>
           <button class="btn btn-dark" id="genFlyer1920">\u2b07\ufe0f Story 1080\u00d71920</button>
@@ -1114,7 +1112,7 @@ const FlyerImageModule = (() => {
     ctx.font = `700 ${Math.round(W * 0.042)}px Arial, sans-serif`;
     ctx.textAlign = 'center';
     ctx.letterSpacing = '3px';
-    ctx.fillText('🏷️  ' + typeLabel, W/2, Math.round(H * 0.245));
+    ctx.fillText('\u1f3f7\ufe0f  ' + typeLabel, W/2, Math.round(H * 0.245));
 
     // L\u00ednea separadora blanca
     ctx.strokeStyle = 'rgba(255,255,255,0.3)';
@@ -1218,10 +1216,10 @@ const FlyerImageModule = (() => {
     ctx.fillStyle = C.blanco;
     ctx.textAlign = 'center';
     ctx.font = `700 ${Math.round(W * 0.038)}px Arial, sans-serif`;
-    ctx.fillText('📞 3462 543210', W/2, footY + Math.round(footH * 0.38));
+    ctx.fillText('\u1f4de 3462 543210', W/2, footY + Math.round(footH * 0.38));
     ctx.font = `400 ${Math.round(W * 0.030)}px Arial, sans-serif`;
     ctx.fillStyle = C.blancoSub;
-    ctx.fillText('📍 3 de Febrero 136, Venado Tuerto', W/2, footY + Math.round(footH * 0.72));
+    ctx.fillText('\u1f4cd 3 de Febrero 136, Venado Tuerto', W/2, footY + Math.round(footH * 0.72));
 
     // \u2500\u2500 MOSTRAR PREVIEW Y BOT\u00d3N DESCARGA \u2500\u2500
     const previewArea = document.getElementById('flyerCanvasPreview');
@@ -1245,15 +1243,15 @@ const FlyerImageModule = (() => {
 const FlyerModule = (() => {
   function generateText(items, totalRounded, phrase, type) {
     const lines=[];
-    lines.push(`🥩 *CARNICER\u00cdA A LA ESTACA* 🥩`);
-    lines.push(`📍 3 de Febrero 136, Venado Tuerto`);
-    lines.push(`📞 3462 543210`);
+    lines.push(`\u1f969 *CARNICER\u00cdA A LA ESTACA* \u1f969`);
+    lines.push(`\u1f4cd 3 de Febrero 136, Venado Tuerto`);
+    lines.push(`\u1f4de 3462 543210`);
     lines.push('');
-    lines.push(`🏷️ *${typeName(type).toUpperCase()}*`);
+    lines.push(`\u1f3f7\ufe0f *${typeName(type).toUpperCase()}*`);
     lines.push('');
     for(const it of items){ const icon=getRubroIcon(it.product.rubro); const desc=it.weight?`${it.product.nombre} \u2014 ${it.weight}kg`:`${it.product.nombre} \u2014 pieza completa`; lines.push(`${icon} ${desc}`); }
     lines.push('');
-    lines.push(`💰 *PRECIO: $${totalRounded.toLocaleString()}*`);
+    lines.push(`\u1f4b0 *PRECIO: $${totalRounded.toLocaleString()}*`);
     lines.push('');
     if(state.extraPromoText){lines.push(`\u26a0\ufe0f ${state.extraPromoText}`);lines.push('');}
     if(phrase)lines.push(phrase);
@@ -1292,9 +1290,9 @@ const SavedModule = (() => {
         <div><div class="combo-name-cell">${off.name}</div><div class="combo-detail-cell">${content||'Sin detalle'}</div></div>
         <div class="combo-price-cell"><div>$${(off.totalRounded||0).toLocaleString()}</div>${avg?`<div style="font-size:11px;color:var(--gris-texto);">${avg}</div>`:''}</div>
         <div class="combo-actions-cell">
-          <button class="btn btn-orange btn-sm" data-id="${off.id}" title="Ver flyer">📋</button>
+          <button class="btn btn-orange btn-sm" data-id="${off.id}" title="Ver flyer">\u1f4cb</button>
           <button class="btn btn-ghost btn-sm edit-saved-btn" data-id="${off.id}" title="Editar">\u270f\ufe0f</button>
-          <button class="btn btn-ghost btn-sm del-saved-btn" data-id="${off.id}" title="Eliminar" style="color:var(--rojo);">🗑️</button>
+          <button class="btn btn-ghost btn-sm del-saved-btn" data-id="${off.id}" title="Eliminar" style="color:var(--rojo);">\u1f5d1\ufe0f</button>
         </div>
       </div>`;
     }).join('');
@@ -1391,7 +1389,7 @@ const SummaryModule = (() => {
       const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='resumen_combos.csv';a.click();URL.revokeObjectURL(url);
-      toast('📥 CSV descargado');
+      toast('\u1f4e5 CSV descargado');
     });
   }
   return { render, initEvents };
@@ -1471,7 +1469,7 @@ const PrintModule = (() => {
 .print-footer{margin-top:8mm;border-top:1px solid #ddd;padding-top:3mm;text-align:center;font-size:8pt;color:#888;}
 @media print{@page{margin:10mm 12mm;}}</style></head>
 <body><div class="print-page">
-<div class="print-header"><h1>🥩 Carnicer\u00eda A La Estaca</h1><p>📞 3462 543210 &nbsp;|&nbsp; 📍 3 de Febrero 136, Venado Tuerto &nbsp;|&nbsp; ${fecha}</p><p style="margin-top:2mm;font-size:8pt;">${combos.length} combo${combos.length!==1?'s':''}</p></div>
+<div class="print-header"><h1>\u1f969 Carnicer\u00eda A La Estaca</h1><p>\u1f4de 3462 543210 &nbsp;|&nbsp; \u1f4cd 3 de Febrero 136, Venado Tuerto &nbsp;|&nbsp; ${fecha}</p><p style="margin-top:2mm;font-size:8pt;">${combos.length} combo${combos.length!==1?'s':''}</p></div>
 <div class="print-cards">${cards}</div>
 <div class="print-footer">Carnicer\u00eda A La Estaca \u00b7 Generado el ${fecha}</div>
 </div><script>window.onload=()=>window.print();<\/script></body></html>`;
@@ -1540,88 +1538,79 @@ const DataModule = (() => {
 // \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 const PromptModule = (() => {
   let selectedIds = new Set();
-  let currentMode = 'historia';
+  let currentMode = 'historia'; // 'historia' | 'publicacion'
 
-  function getSelectedCombosFromDom() {
-    const boxes = document.querySelectorAll('#promptComboGrid .prompt-chk:checked');
-    const ids = new Set(Array.from(boxes).map(b => b.dataset.id));
-    if (ids.size) selectedIds = ids;
-    return state.savedOffers.filter(o => selectedIds.has(o.id));
-  }
-
+  // \u2500\u2500 Render combo selection grid \u2500\u2500
   function render() {
     const grid = document.getElementById('promptComboGrid');
     if (!grid) return;
     if (!state.savedOffers.length) {
-      grid.innerHTML = '<p style="color:var(--gris-texto);font-size:var(--fs-sm);grid-column:1/-1;">No hay combos guardados aún.</p>';
+      grid.innerHTML = '<p style="color:var(--gris-texto);font-size:var(--fs-sm);grid-column:1/-1;">No hay combos guardados a\u00fan.</p>';
       return;
     }
     grid.innerHTML = state.savedOffers.map(off => {
       const checked = selectedIds.has(off.id);
-      const tw = (off.itemsDetail || []).reduce((s, it) => s + (it.weight || 0), 0);
-      const avg = tw > 0 ? `$${Math.round((off.totalRounded || 0) / tw).toLocaleString()}/kg` : '';
-      const content = (off.itemsDetail || []).map(it => {
-        const prod = it.product || {};
-        return `${getRubroIcon(prod.rubro || '')} ${prod.nombre || 'Producto'}${it.weight ? ' ' + it.weight + 'kg' : ''}`;
-      }).join(' · ');
-      return `<label style="display:flex;align-items:flex-start;gap:10px;border:1.5px solid ${checked ? 'var(--rojo)' : 'var(--gris-medio)'};border-radius:var(--radio-sm);padding:12px;cursor:pointer;background:${checked ? 'var(--rojo-light)' : 'var(--blanco)'};transition:all 0.12s;">
-        <input type="checkbox" class="prompt-chk" data-id="${off.id}" ${checked ? 'checked' : ''} style="width:20px;height:20px;accent-color:var(--rojo);flex-shrink:0;margin-top:2px;cursor:pointer;">
+      const tw = (off.itemsDetail||[]).reduce((s,it)=>s+(it.weight||0),0);
+      const avg = tw>0 ? `$${Math.round(off.totalRounded/tw).toLocaleString()}/kg` : '';
+      const content = (off.itemsDetail||[]).map(it=>`${getRubroIcon(it.product.rubro)} ${it.product.nombre}${it.weight?' '+it.weight+'kg':''}`).join(' \u00b7 ');
+      return `<label style="display:flex;align-items:flex-start;gap:10px;border:1.5px solid ${checked?'var(--rojo)':'var(--gris-medio)'};border-radius:var(--radio-sm);padding:12px;cursor:pointer;background:${checked?'var(--rojo-light)':'var(--blanco)'};transition:all 0.12s;">
+        <input type="checkbox" class="prompt-chk" data-id="${off.id}" ${checked?'checked':''} style="width:20px;height:20px;accent-color:var(--rojo);flex-shrink:0;margin-top:2px;cursor:pointer;">
         <div>
-          <div style="font-weight:600;font-size:var(--fs-sm);">${off.name || 'Combo'}</div>
+          <div style="font-weight:600;font-size:var(--fs-sm);">${off.name}</div>
           <div style="font-size:11px;color:var(--gris-texto);margin-top:2px;">
             <span class="badge ${typeBadgeClass(off.type)}" style="font-size:10px;">${typeName(off.type)}</span>
-            ${off.available ? '✅' : '❌'}
-            <span style="color:var(--rojo);font-weight:700;margin-left:4px;">$${(off.totalRounded || 0).toLocaleString()}</span>
-            ${avg ? `<span style="color:var(--gris-texto);margin-left:4px;">${avg}</span>` : ''}
+            ${off.available?'\u2705':'\u274c'}
+            <span style="color:var(--rojo);font-weight:700;margin-left:4px;">$${(off.totalRounded||0).toLocaleString()}</span>
+            ${avg?`<span style="color:var(--gris-texto);margin-left:4px;">${avg}</span>`:''}
           </div>
           <div style="font-size:11px;color:var(--gris-texto);margin-top:3px;">${content}</div>
         </div>
       </label>`;
     }).join('');
-
     grid.querySelectorAll('.prompt-chk').forEach(chk => {
       chk.addEventListener('change', () => {
         if (chk.checked) selectedIds.add(chk.dataset.id);
         else selectedIds.delete(chk.dataset.id);
+        render();
       });
     });
   }
 
+  // \u2500\u2500 Shared combo block builder \u2500\u2500
   function buildCombosBlock(combos, showAvg) {
     return combos.map(off => {
-      const items = Array.isArray(off.itemsDetail) ? off.itemsDetail : [];
-      const tw = items.reduce((s, it) => s + (it.weight || 0), 0);
-      const avg = tw > 0 ? Math.round((off.totalRounded || 0) / tw) : null;
-      const productos = items.map(it => {
-        const prod = it.product || {};
-        return `${getRubroIcon(prod.rubro || '')} ${prod.nombre || 'Producto'}${it.weight ? ' — ' + it.weight + 'kg' : ''}`;
-      }).join('
-');
-      const lines = [`COMBO — $${(off.totalRounded || 0).toLocaleString()}`];
+      const tw = (off.itemsDetail||[]).reduce((s,it)=>s+(it.weight||0),0);
+      const avg = tw>0 ? Math.round(off.totalRounded/tw) : null;
+      const productos = (off.itemsDetail||[]).map(it =>
+        `${getRubroIcon(it.product.rubro)} ${it.product.nombre} (${it.product.rubro})${it.weight?' \u2014 '+it.weight+'kg':''}`
+      ).join('\n');
+      let lines = [`COMBO \u2014 $${(off.totalRounded||0).toLocaleString()}`];
       if (showAvg && avg) lines.push(`(Precio promedio: $${avg.toLocaleString()}/kg)`);
-      if (productos) lines.push(productos);
-      return lines.join('
-');
-    }).join('
-
-');
+      lines.push(productos);
+      return lines.join('\n');
+    }).join('\n');
   }
 
+  // ── Historia 1080×1920 ──
   function buildHistoria(combos, bg, showAvg, showAviso, extra, promoText) {
     const bgDesc = bg === 'claro'
-      ? 'Fondo claro casi blanco grisáceo con textura sutil tipo tela o papel premium'
-      : 'Fondo rojo oscuro (#c0392b) con textura sutil tipo tela o cuero, estilo premium';
+      ? 'Fondo claro casi blanco grisáceo con textura tipo tela o cuero'
+      : 'Fondo rojo oscuro (#c0392b) con textura tipo tela o cuero, estilo premium';
     const combosText = buildCombosBlock(combos, showAvg);
-    const parts = [
-      `Generá un flyer promocional estilo carnicería premium para redes sociales (formato HISTORIA VERTICAL 1080x1920px) que muestre ${combos.length} combo${combos.length !== 1 ? 's' : ''} disponibles esta semana.`,
+
+    const lines = [
+      `Generá un flyer promocional estilo carnicería premium para redes sociales (formato HISTORIA VERTICAL 1080x1920px) que muestre ${combos.length} combo${combos.length!==1?'s':''} disponibles esta semana.`,
       '',
       'DATOS FIJOS:',
       '- Negocio: Carnicería A La Estaca',
       '- Teléfono: 3462 543210',
-      '- Dirección: 3 de Febrero 136, Venado Tuerto',
-      ...(showAviso ? ['- Aviso: OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK'] : []),
-      `- Promoción: ${promoText}`,
-      ...(extra ? [`- Extra: ${extra}`] : []),
+      '- Dirección: 3 de Febrero 136, Venado Tuerto'
+    ];
+    if (showAviso) lines.push('- Aviso: OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK');
+    lines.push(`- Promoción: ${promoText}`);
+    if (extra) lines.push(`- Extra: ${extra}`);
+
+    lines.push(
       '',
       'COMBOS DE LA SEMANA:',
       '',
@@ -1629,38 +1618,46 @@ const PromptModule = (() => {
       '',
       'DISEÑO — HISTORIA VERTICAL 1080×1920:',
       `- ${bgDesc}`,
-      '- El layout es vertical, aprovechando toda la altura de la pantalla del celular.',
-      '- Header en el tercio superior con presencia fuerte de marca: “CARNICERÍA A LA ESTACA”.',
-      '- Subtítulo “COMBOS DE LA SEMANA” claro y comercial.',
-      '- Zona central: cada combo en su propia tarjeta o bloque, apilados verticalmente.',
-      `- Precio de cada combo en grande y muy llamativo.${showAvg ? ' Debajo puede figurar el precio promedio por kg en tamaño menor.' : ''}`,
-      '- Ícono del animal junto a cada corte (🐄 novillo, 🐖 cerdo, 🐔 pollo).',
-      ...(extra ? [`- Incluir un destacado adicional con este texto: “${extra}”.`] : []),
-      ...(showAviso ? ['- Incluir una banda o aviso visible con el texto de contado/stock.'] : []),
-      `- Zona inferior: teléfono, dirección y bloque de promoción con 🎁: “${promoText}”.`,
-      '- Paleta: rojo #c0392b, blanco, negro y acentos elegantes.',
-      '- Estilo: premium, apetitoso, confiable, argentino.',
-      '- Asegurate de que todo el contenido sea legible en pantalla de celular sin zoom.'
-    ];
-    return parts.join('
-');
+      '- El layout es vertical, aprovechando toda la altura de la pantalla del celular',
+      '- Header en el tercio superior: marco decorativo dorado, "PRODUCTOS NATURALES" pequeño arriba, "CARNICERÍA A LA ESTACA" en tipografía dorada ornamental con serifa estilo vintage premium',
+      '- Subtítulo "COMBOS DE LA SEMANA" en dorado con guiones decorativos — debajo del header',
+      '- Zona central: cada combo en su propia tarjeta con borde dorado fino, apiladas verticalmente',
+      '- Precio de cada combo en rojo/dorado grande y llamativo'
+    );
+    if (showAvg) lines.push('- Precio promedio por kg debajo del precio en texto más pequeño');
+    lines.push('- Ícono del animal junto a cada corte (🐄 novillo, 🐖 cerdo, 🐔 pollo)');
+    if (showAviso) lines.push('- Banda horizontal con ícono ⚠️: "OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK"');
+    if (extra) lines.push(`- Texto destacado adicional: "${extra}"`);
+    lines.push(
+      `- Zona inferior: teléfono, dirección y recuadro redondeado con ícono 🎁: "${promoText}"`,
+      '- Paleta: rojo #c0392b, dorado #f5d547, blanco, negro',
+      '- Estilo: premium, apetitoso, confiable, argentino',
+      '- Asegurate de que todo el contenido sea legible en pantalla de celular sin necesidad de hacer zoom'
+    );
+
+    return lines.join('\n');
   }
 
+  // ── Publicación 1080×1080 ──
   function buildPublicacion(combos, bg, showAvg, showAviso, extra, promoText) {
     const bgDesc = bg === 'claro'
-      ? 'Fondo claro casi blanco grisáceo con textura sutil tipo tela o papel premium'
-      : 'Fondo rojo oscuro (#c0392b) con textura sutil tipo tela o cuero, estilo premium';
+      ? 'Fondo claro casi blanco grisáceo con textura tipo tela o cuero'
+      : 'Fondo rojo oscuro (#c0392b) con textura tipo tela o cuero, estilo premium';
     const combosText = buildCombosBlock(combos, showAvg);
-    const parts = [
-      `Generá un flyer promocional estilo carnicería premium para redes sociales (formato PUBLICACIÓN CUADRADA 1080x1080px) que muestre ${combos.length} combo${combos.length !== 1 ? 's' : ''} disponibles esta semana.`,
+
+    const lines = [
+      `Generá un flyer promocional estilo carnicería premium para redes sociales (formato PUBLICACIÓN CUADRADA 1080x1080px) que muestre ${combos.length} combo${combos.length!==1?'s':''} disponibles esta semana.`,
       '',
       'DATOS FIJOS:',
       '- Negocio: Carnicería A La Estaca',
       '- Teléfono: 3462 543210',
-      '- Dirección: 3 de Febrero 136, Venado Tuerto',
-      ...(showAviso ? ['- Aviso: OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK'] : []),
-      `- Promoción: ${promoText}`,
-      ...(extra ? [`- Extra: ${extra}`] : []),
+      '- Dirección: 3 de Febrero 136, Venado Tuerto'
+    ];
+    if (showAviso) lines.push('- Aviso: OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK');
+    lines.push(`- Promoción: ${promoText}`);
+    if (extra) lines.push(`- Extra: ${extra}`);
+
+    lines.push(
       '',
       'COMBOS DE LA SEMANA:',
       '',
@@ -1668,77 +1665,80 @@ const PromptModule = (() => {
       '',
       'DISEÑO — PUBLICACIÓN CUADRADA 1080×1080:',
       `- ${bgDesc}`,
-      '- El formato es cuadrado y debe verse equilibrado en feed de Instagram y Facebook.',
-      '- Header compacto arriba con la marca “CARNICERÍA A LA ESTACA”.',
-      '- Subtítulo “COMBOS DE LA SEMANA” claro y comercial.',
-      `- Zona central dominante con una grilla ordenada para mostrar los ${combos.length} combos.${showAvg ? ' Dentro de cada tarjeta puede figurar el precio promedio por kg en tamaño pequeño.' : ''}`,
-      '- Ícono del animal junto a cada corte (🐄 novillo, 🐖 cerdo, 🐔 pollo).',
-      ...(extra ? [`- Incluir un destacado adicional con este texto: “${extra}”.`] : []),
-      ...(showAviso ? ['- Incluir una banda o aviso visible con el texto de contado/stock, pero sin ocupar demasiado espacio.'] : []),
-      `- Franja inferior compacta con teléfono, dirección y promo con 🎁: “${promoText}”.`,
-      '- Paleta: rojo #c0392b, blanco, negro y acentos elegantes.',
-      '- Estilo: premium, apetitoso, confiable, argentino.',
-      '- Todo el texto debe ser legible sin zoom.'
-    ];
-    return parts.join('
-');
+      '- El formato es CUADRADO — el diseño debe estar perfectamente equilibrado horizontal y verticalmente',
+      '- Header compacto en la parte superior: marco decorativo dorado reducido, "PRODUCTOS NATURALES" pequeño, "CARNICERÍA A LA ESTACA" en tipografía dorada ornamental con serifa',
+      '- Subtítulo "COMBOS DE LA SEMANA" en dorado con guiones decorativos — compacto',
+      `- Zona central dominante: los ${combos.length} combos organizados en una GRILLA de 2 columnas con tarjetas de borde dorado fino`,
+      '- Cada tarjeta muestra precio grande y productos con ícono de animal'
+    );
+    if (showAvg) lines.push('- Precio promedio por kg en texto pequeño dentro de cada tarjeta');
+    lines.push('- Ícono del animal junto a cada corte (🐄 novillo, 🐖 cerdo, 🐔 pollo)');
+    if (showAviso) lines.push('- Banda o franja con ícono ⚠️: "OFERTAS ÚNICAMENTE CONTADO EFECTIVO HASTA AGOTAR STOCK" — compacta para no ocupar demasiado espacio');
+    if (extra) lines.push(`- Texto destacado adicional: "${extra}"`);
+    lines.push(
+      '- Franja inferior compacta: teléfono, dirección y texto del sorteo con ícono 🎁 — todo en una línea o dos líneas máximo',
+      '- Paleta: rojo #c0392b, dorado #f5d547, blanco, negro',
+      '- Estilo: premium, apetitoso, confiable, argentino',
+      '- IMPORTANTE: el diseño cuadrado debe verse bien tanto en feed de Instagram como en Facebook — todo el texto debe ser legible sin zoom'
+    );
+
+    return lines.join('\n');
   }
 
+  // ── Main build dispatcher ──
   function buildPrompt() {
-    try {
-      const combos = getSelectedCombosFromDom();
-      if (!combos.length) {
-        toast('Seleccioná al menos un combo.');
-        return;
-      }
-      const bg = document.getElementById('promptBg').value;
-      const showAvg = document.getElementById('promptShowAvg').value === 'si';
-      const showAviso = document.getElementById('promptShowAviso').value === 'si';
-      const extra = document.getElementById('promptExtra').value.trim();
-      const promoText = state.promoText || '¡Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000';
+    if (!selectedIds.size) { toast('Seleccioná al menos un combo.'); return; }
+    const combos = state.savedOffers.filter(o => selectedIds.has(o.id));
+    if (!combos.length) { toast('No se encontraron los combos seleccionados.'); return; }
 
-      let prompt = '';
-      let label = '';
-      if (currentMode === 'historia') {
-        prompt = buildHistoria(combos, bg, showAvg, showAviso, extra, promoText);
-        label = `📱 Prompt Historia 1080×1920 — ${combos.length} combo${combos.length !== 1 ? 's' : ''}`;
-      } else {
-        prompt = buildPublicacion(combos, bg, showAvg, showAviso, extra, promoText);
-        label = `🖼️ Prompt Publicación 1080×1080 — ${combos.length} combo${combos.length !== 1 ? 's' : ''}`;
-      }
+    const bg = document.getElementById('promptBg').value;
+    const showAvg = document.getElementById('promptShowAvg').value === 'si';
+    const showAviso = document.getElementById('promptShowAviso').value === 'si';
+    const extra = document.getElementById('promptExtra').value.trim();
+    const promoText = state.promoText || '¡Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000';
 
-      const output = document.getElementById('promptOutput');
-      const labelEl = document.getElementById('promptOutputLabel');
-      const textEl = document.getElementById('promptText');
-      if (!output || !labelEl || !textEl) throw new Error('Faltan elementos del output del prompt en el HTML');
-
-      labelEl.textContent = label;
-      textEl.value = prompt;
-      output.style.display = 'block';
-      textEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      toast('✅ Prompt generado');
-    } catch (err) {
-      console.error('Error generando prompt:', err);
-      toast('❌ Error generando prompt');
+    let prompt = '';
+    let label = '';
+    if (currentMode === 'historia') {
+      prompt = buildHistoria(combos, bg, showAvg, showAviso, extra, promoText);
+      label = `📱 Prompt Historia 1080×1920 — ${combos.length} combo${combos.length!==1?'s':''}`;
+    } else {
+      prompt = buildPublicacion(combos, bg, showAvg, showAviso, extra, promoText);
+      label = `🖼️ Prompt Publicación 1080×1080 — ${combos.length} combo${combos.length!==1?'s':''}`;
     }
+
+    const outputLabel = document.getElementById('promptOutputLabel');
+    const promptText = document.getElementById('promptText');
+    const promptOutput = document.getElementById('promptOutput');
+
+    if (!outputLabel || !promptText || !promptOutput) {
+      console.error('Faltan elementos del módulo Prompt IA');
+      toast('Error en módulo Prompt IA.');
+      return;
+    }
+
+    outputLabel.textContent = label;
+    promptText.value = prompt;
+    promptOutput.style.display = 'block';
+    promptText.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function initEvents() {
+    // Subtabs Historia / Publicaci\u00f3n
     document.querySelectorAll('#promptSubtabs .subtab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('#promptSubtabs .subtab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentMode = btn.dataset.pmode;
+        // Hide output when switching mode
         document.getElementById('promptOutput').style.display = 'none';
       });
     });
     document.getElementById('promptSelAll').addEventListener('click', () => {
-      state.savedOffers.forEach(o => selectedIds.add(o.id));
-      render();
+      state.savedOffers.forEach(o => selectedIds.add(o.id)); render();
     });
     document.getElementById('promptSelNone').addEventListener('click', () => {
-      selectedIds.clear();
-      render();
+      selectedIds.clear(); render();
     });
     document.getElementById('promptSelAvail').addEventListener('click', () => {
       selectedIds.clear();
@@ -1748,7 +1748,7 @@ const PromptModule = (() => {
     document.getElementById('promptGenerate').addEventListener('click', buildPrompt);
     document.getElementById('promptCopyBtn').addEventListener('click', () => {
       const text = document.getElementById('promptText').value;
-      navigator.clipboard.writeText(text).then(() => toast('📋 Prompt copiado — pegalo en ChatGPT'));
+      navigator.clipboard.writeText(text).then(() => toast('\u1f4cb Prompt copiado \u2014 pegalo en ChatGPT'));
     });
   }
 
@@ -1810,9 +1810,13 @@ function init() {
       // Normalizar datos entrantes
       state.priceVersions = data.priceVersions || [];
       state.activeVersionId = data.activeVersionId || null;
-      state.savedOffers = (data.savedOffers || []).map(off => ({ ...off, available: off.available ?? true, published: off.published ?? false, publishedDate: off.publishedDate ?? '' }));
-      console.log('Firebase data loaded', data);
-      state.promoText = data.promoText || '🎁 \u00a1Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000. \u00a1Pod\u00e9s ganar hasta $200.000 al mes! 🎁';
+      state.savedOffers = (data.savedOffers || []).map(off => ({
+        ...off,
+        available: off.available ?? true,
+        published: off.published ?? false,
+        publishedDate: off.publishedDate ?? ''
+      }));
+      state.promoText = data.promoText || '\u1f381 \u00a1Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000. \u00a1Pod\u00e9s ganar hasta $200.000 al mes! \u1f381';
       state.extraPromoText = data.extraPromoText || '';
       state.randomPhrases = data.randomPhrases || ['\u2728 La mejor carne, con la frescura que merec\u00e9s \u2728','\u2728 Calidad y limpieza en cada corte \u2728','\u2728 Atenci\u00f3n personalizada y productos de primera \u2728','\u2728 Siempre fresco, siempre a tu gusto \u2728'];
     } else {
@@ -1820,7 +1824,7 @@ function init() {
       state.priceVersions = [{id:'v1',name:'Lista 1 (original)',date:new Date().toLocaleString(),observation:'Precios iniciales',products:buildInitialProducts()}];
       state.activeVersionId = 'v1';
       state.savedOffers = [];
-      state.promoText = '🎁 \u00a1Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000. \u00a1Pod\u00e9s ganar hasta $200.000 al mes! 🎁';
+      state.promoText = '\u1f381 \u00a1Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000. \u00a1Pod\u00e9s ganar hasta $200.000 al mes! \u1f381';
       state.extraPromoText = '';
       state.randomPhrases = ['\u2728 La mejor carne, con la frescura que merec\u00e9s \u2728','\u2728 Calidad y limpieza en cada corte \u2728','\u2728 Atenci\u00f3n personalizada y productos de primera \u2728','\u2728 Siempre fresco, siempre a tu gusto \u2728'];
       saveToFirebase(state);
@@ -1828,7 +1832,6 @@ function init() {
     renderAll();
     setSyncStatus('ok','\u2705 Sincronizado');
   }, (error) => {
-    console.error('Error leyendo Firebase:', error);
     setSyncStatus('err','\u274c Sin conexi\u00f3n');
     // Intentar cargar backup local
     try {
