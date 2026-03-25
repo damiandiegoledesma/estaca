@@ -690,6 +690,7 @@ async function saveToFirebase(state) {
       });
       setSyncStatus('ok', '\u2705 Sincronizado');
     } catch(e) {
+      console.error('Error guardando en Firebase:', e);
       setSyncStatus('err', '\u274c Sin conexi\u00f3n');
       // fallback to localStorage
       try { localStorage.setItem('estaca_backup', JSON.stringify(state)); } catch(_) {}
@@ -1783,7 +1784,12 @@ function init() {
       // Normalizar datos entrantes
       state.priceVersions = data.priceVersions || [];
       state.activeVersionId = data.activeVersionId || null;
-      state.savedOffers = (data.savedOffers || []).map(off=>({available:true,published:false,publishedDate:'',...off}));
+      state.savedOffers = (data.savedOffers || []).map(off => ({
+        ...off,
+        available: off.available ?? true,
+        published: off.published ?? false,
+        publishedDate: off.publishedDate ?? ''
+      }));
       state.promoText = data.promoText || '\u1f381 \u00a1Sorteos semanales! Cada semana sorteamos una orden de compra por $50.000. \u00a1Pod\u00e9s ganar hasta $200.000 al mes! \u1f381';
       state.extraPromoText = data.extraPromoText || '';
       state.randomPhrases = data.randomPhrases || ['\u2728 La mejor carne, con la frescura que merec\u00e9s \u2728','\u2728 Calidad y limpieza en cada corte \u2728','\u2728 Atenci\u00f3n personalizada y productos de primera \u2728','\u2728 Siempre fresco, siempre a tu gusto \u2728'];
@@ -1800,6 +1806,7 @@ function init() {
     renderAll();
     setSyncStatus('ok','\u2705 Sincronizado');
   }, (error) => {
+    console.error('Error leyendo Firebase:', error);
     setSyncStatus('err','\u274c Sin conexi\u00f3n');
     // Intentar cargar backup local
     try {
